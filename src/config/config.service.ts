@@ -1,14 +1,16 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 
 @Injectable()
 export class ConfigService {
-  private readonly envConfig: {[key: string]: string};
+  private readonly envConfig: { [key: string]: string };
 
-  constructor(filePath: string) {
-    this.envConfig = dotenv.parse(fs.readFileSync(filePath));
+  constructor() {
+    this.envConfig = dotenv.parse(
+      fs.readFileSync(`env/${process.env.NODE_ENV || 'development'}.env`),
+    );
   }
 
   get(key: string): string {
@@ -41,5 +43,8 @@ export class ConfigService {
 
   getDatabaseDropSchema(): boolean {
     return Boolean(this.envConfig.DATABASE_DROPSCHEMA);
+  }
+  getJwtSecret(): string {
+    return this.envConfig.JWT_SECRET;
   }
 }

@@ -14,11 +14,12 @@ import {
   TypeOrmModuleOptions,
   TypeOrmOptionsFactory,
 } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { AuthMiddleware } from './common/middleware/auth.middleware';
+import { CatsController } from './cats/cats.controller';
 
 @Injectable()
 class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -60,5 +61,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(LoggerMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
+    consumer.apply(AuthMiddleware).exclude({path: 'login', method: RequestMethod.ALL})
+      .forRoutes(AppController, CatsController);
   }
 }
