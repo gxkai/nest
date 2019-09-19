@@ -6,6 +6,8 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigService } from '../config/config.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '../db/entity/user.entity';
 const jwt = (): DynamicModule => {
   const config = new ConfigService();
   return JwtModule.register({
@@ -15,6 +17,7 @@ const jwt = (): DynamicModule => {
 };
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
     UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     jwt(),

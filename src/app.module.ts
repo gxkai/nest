@@ -37,6 +37,11 @@ class TypeOrmConfigService implements TypeOrmOptionsFactory {
       entities: ['src/db/entity/*.ts'],
       migrations: ['src/db/migration/**/*.ts'],
       subscribers: ['src/db/subscriber/*.ts'],
+      cli: {
+        entitiesDir: 'src/db/entity',
+        migrationsDir: 'src/db/migration',
+        subscribersDir: 'src/db/subscriber',
+      },
     };
   }
 }
@@ -61,7 +66,12 @@ export class AppModule implements NestModule {
     consumer
       .apply(LoggerMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
-    consumer.apply(AuthMiddleware).exclude({path: 'login', method: RequestMethod.ALL})
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'login', method: RequestMethod.ALL },
+        { path: 'register', method: RequestMethod.ALL },
+      )
       .forRoutes(AppController, CatsController);
   }
 }

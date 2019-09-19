@@ -38,11 +38,11 @@ export class ConfigService {
   }
 
   getDatabaseSychronize(): boolean {
-    return Boolean(this.envConfig.DATABASE_SYNCHRONIZE);
+    return this.envConfig.DATABASE_SYNCHRONIZE === 'true';
   }
 
   getDatabaseDropSchema(): boolean {
-    return Boolean(this.envConfig.DATABASE_DROPSCHEMA);
+    return this.envConfig.DATABASE_DROPSCHEMA === 'true';
   }
   getJwtSecret(): string {
     return this.envConfig.JWT_SECRET;

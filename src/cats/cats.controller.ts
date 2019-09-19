@@ -18,7 +18,6 @@ import { Cat } from './interfaces/cat.interface';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
-@UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
